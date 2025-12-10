@@ -1,0 +1,17 @@
+[build]
+# 빌드 작업 수 (CPU 코어 수에 맞게 조정)
+# jobs = 8
+
+[target.x86_64-unknown-linux-gnu]
+rustflags = ["-C", "target-cpu=native"]
+
+[target.wasm32-unknown-unknown]
+rustflags = ["-C", "opt-level=s"]
+
+[alias]
+# 자주 쓰는 명령어 별칭
+t = "test"
+c = "clippy"
+b = "build"
+br = "build --release"
+wasm = "build -p sap-physvisor --target wasm32-unknown-unknown --release"

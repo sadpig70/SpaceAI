@@ -1,0 +1,8 @@
+# SAP Rust Clippy 설정
+# https://rust-lang.github.io/rust-clippy/master/index.html
+
+# 복잡한 타입 허용
+type-complexity-threshold = 500
+
+# 함수 인자 수 제한 완화
+too-many-arguments-threshold = 10

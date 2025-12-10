@@ -1,0 +1,21 @@
+[package]
+name = "sap-cloud"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+description = "SAP v1.2 Cloud - VTS 할당 및 글로벌 상태 관리"
+
+[dependencies]
+sap-core = { workspace = true }
+serde = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+rand = { workspace = true }
+
+[features]
+default = ["std"]
+std = []

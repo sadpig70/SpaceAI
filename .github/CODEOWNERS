@@ -1,0 +1,17 @@
+# SAP Rust Code Owners
+# 이 파일은 각 코드 영역의 리뷰어를 지정합니다.
+
+# 전체 Rust 코드
+/rust/ @sap-rust-team
+
+# 핵심 크레이트
+/rust/crates/sap-core/ @sap-core-maintainers
+/rust/crates/sap-physics/ @sap-physics-maintainers
+/rust/crates/sap-network/ @sap-network-maintainers
+/rust/crates/sap-economy/ @sap-economy-maintainers
+
+# 통합 런타임
+/rust/crates/sap-edge/ @sap-edge-maintainers
+
+# CI/CD 구성
+/.github/ @devops-team

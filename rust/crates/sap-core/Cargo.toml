@@ -1,0 +1,21 @@
+[package]
+name = "sap-core"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+description = "SAP v1.2 Core Types - 공통 타입, 프로토콜, 유틸리티"
+
+[dependencies]
+serde = { workspace = true }
+serde_with = { version = "=3.14.0", features = ["hex"] }
+bincode = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+rand = { workspace = true }
+
+[features]
+default = ["std"]
+std = []

@@ -1,0 +1,21 @@
+[package]
+name = "sap-network"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+description = "SAP v1.2 Network Sync - L3 PredictiveSync 예측/롤백 엔진"
+
+[dependencies]
+sap-core = { workspace = true }
+serde = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+rand = { workspace = true }
+
+[features]
+default = ["std"]
+std = []

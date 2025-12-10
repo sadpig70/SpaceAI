@@ -1,0 +1,21 @@
+[package]
+name = "sap-edge"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+description = "SAP v1.2 Edge Node - L2+L3+L4 통합 런타임"
+
+[dependencies]
+sap-core = { workspace = true }
+sap-physics = { workspace = true }
+sap-network = { workspace = true }
+sap-economy = { workspace = true }
+
+[dev-dependencies]
+rand = { workspace = true }
+
+[features]
+default = ["std"]
+std = []

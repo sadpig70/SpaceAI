@@ -1,0 +1,13 @@
+# Rust artifacts
+target/
+**/*.rs.bk
+Carto.lock
+
+# IDE settings
+.idea/
+.vscode/
+*.swp
+
+# Legacy & Internal
+_legacy/
+task.md

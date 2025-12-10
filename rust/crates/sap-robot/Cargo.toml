@@ -1,0 +1,21 @@
+[package]
+name = "sap-robot"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+description = "SAP v1.2 Robot SDK - 로봇 클라이언트 라이브러리"
+
+[dependencies]
+sap-core = { workspace = true }
+serde = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+rand = { workspace = true }
+
+[features]
+default = ["std"]
+std = []

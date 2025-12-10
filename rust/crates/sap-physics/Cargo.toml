@@ -1,0 +1,21 @@
+[package]
+name = "sap-physics"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+description = "SAP v1.2 Physics Validation - L2 TrustOS 물리 검증 커널"
+
+[dependencies]
+sap-core = { workspace = true }
+serde = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+rand = { workspace = true }
+
+[features]
+default = ["std"]
+std = []

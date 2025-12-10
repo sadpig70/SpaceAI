@@ -1,0 +1,13 @@
+[package]
+name = "sap-examples"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "warehouse_demo"
+path = "../../examples/warehouse_demo.rs"
+
+[dependencies]
+sap-core = { path = "../sap-core" }
+sap-economy = { path = "../sap-economy" }
+rand = "0.8"

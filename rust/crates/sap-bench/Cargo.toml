@@ -1,0 +1,26 @@
+[package]
+name = "sap-bench"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+description = "SAP v1.2 Benchmarks - 통합 성능 측정"
+
+[[bench]]
+name = "edge_runtime"
+harness = false
+
+[[bench]]
+name = "simulation"
+harness = false
+
+[dependencies]
+sap-core = { workspace = true }
+sap-edge = { workspace = true }
+sap-physvisor = { workspace = true }
+sap-physics = { workspace = true }
+rand = { workspace = true }
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }

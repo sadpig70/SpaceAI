@@ -1,0 +1,22 @@
+[package]
+name = "sap-physvisor"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+description = "SAP v1.2 Physvisor - Zone 관리 및 다중 로봇 시뮬레이션"
+
+[dependencies]
+sap-core = { workspace = true }
+sap-physics = { workspace = true }
+serde = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+rand = { workspace = true }
+
+[features]
+default = ["std"]
+std = []
