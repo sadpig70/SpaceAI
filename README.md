@@ -1,5 +1,5 @@
 # Space AI Protocol (SAP)
-
+<img width="2848" height="1504" alt="SAP_infographic_en" src="https://github.com/user-attachments/assets/3bbdf099-77ff-4c89-955f-8f2fb9cd783b" />
 > **10x Cheaper Swarm Robotics Protocol**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
