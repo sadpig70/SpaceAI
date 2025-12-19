@@ -34,7 +34,7 @@ Legacy (Onboard AI):           Space AI (Off-road):
                               ┌─────────────┐
      ...                      │   Robot #2  │
                               │   GPS+IMU   │ $500
-총 비용: $10k × N             └─────────────┘
+총 cost: $10k × N             └─────────────┘
                               
                               Total: $500×N + Server
                                      = 10x Cheaper
