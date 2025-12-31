@@ -10,4 +10,5 @@ Carto.lock
 
 # Legacy & Internal
 _legacy/
+_workspace/
 task.md

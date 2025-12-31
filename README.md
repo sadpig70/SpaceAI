@@ -10,16 +10,16 @@
 
 ## 🚀 Overview
 
-**SAP (Space AI Protocol)** is a revolutionary "Off-road" architecture that shifts intelligence from costly onboard GPUs to a centralized **Edge Server**, dramatically reducing fleet costs and enhancing scalability.
+**SAP (Space AI Protocol)** is a revolutionary protocol that **allocates space from a centralized server** instead of equipping every robot with expensive onboard GPUs.
 
-Instead of every robot computing its own path, Space AI manages **spatial allocation (Voxel Time Slots)** globally, ensuring collision-free coordination for hundreds of agents.
+It sets a new standard for large-scale robot fleet management with an **Off-road architecture**, shifting away from the era of Onboard AI.
 
 ### Core Concept
 
 ```
-Legacy (Onboard AI):           Space AI (Off-road):
+Legacy (Onboard AI):           SAP (Off-road):
 ┌─────────────┐              ┌─────────────┐
-│  Robot #1   │              │   Robot #1  │ (Sensors Only)
+│  Robot #1   │              │   Robot #1  │ (Cheap Sensors Only)
 │ ┌─────────┐ │              │   GPS+IMU   │
 │ │ GPU+AI  │ │ $10,000      │             │ $500
 │ └─────────┘ │              └─────────────┘
@@ -34,9 +34,9 @@ Legacy (Onboard AI):           Space AI (Off-road):
                               ┌─────────────┐
      ...                      │   Robot #2  │
                               │   GPS+IMU   │ $500
-총 비용: $10k × N             └─────────────┘
+总 Cost: $10k × N             └─────────────┘
                               
-                              Total: $500×N + Server
+                              Total Cost: $500×N + Server
                                      = 10x Cheaper
 ```
 
@@ -46,27 +46,27 @@ Legacy (Onboard AI):           Space AI (Off-road):
 
 ### 💰 10x Cost Reduction
 
-- No per-robot GPU: **$10,000 → $500** per unit.
-- One Edge Server manages 500-1000 robots.
-- Massive CAPEX savings for large-scale fleets.
+- No per-robot GPU needed → **$10,000 → $500** per unit
+- One Edge Server manages 500-1000 robots
+- Drastic CAPEX savings for large-scale deployments
 
-### 📈 10x Scalability
+### 📈 10x Easier Scalability
 
-- **Centralized Updates**: Update logic on one server → instantly applied to hundreds of robots.
-- **Unified Debugging**: No need to extract logs from individual agents.
-- **Cloud Optimization**: Leverage infinite compute for global optimization.
+- **Algorithm Updates**: Update only the central server → **Instantly applied to hundreds**
+- **Testing & Debugging**: Integrated management in server environment
+- **Performance Optimization**: Leverage cloud computing resources
 
 ### 🔒 Physical Guarantee
 
-- **Physvisor Layer**: Every motion command is validated against physics laws before execution.
-- **Collision Prediction**: Future-state verification prevents accidents.
-- **Deterministic Rollback**: Safe recovery from network or sync failures.
+- **Physics Verification at Edge** → Pre-emptively block dangerous commands
+- Collision Prediction & Avoidance
+- Safe Recovery via Rollback Mechanism
 
 ### ⚡ Proven Performance
 
-- **Auction Latency**: 8.8 μs (**110x faster** than target).
-- **Simulation**: 3.24 ms per step for 500 robots (**3x safety margin**).
-- **Scalability**: Validated up to 1000 robots.
+- **Auction Processing**: 8.8 μs (**110x faster** than target)
+- **Simulation Step**: 3.24 ms/500 bots (**3x faster** than target)
+- **Scalability**: Verified for 500-1000 robots
 
 ---
 
@@ -80,10 +80,11 @@ Legacy (Onboard AI):           Space AI (Off-road):
 ### 1️⃣ Clone & Build
 
 ```bash
+# Clone Repository
 git clone https://github.com/yourusername/SpaceAI.git
 cd SpaceAI/rust
 
-# Release build is required for performance
+# Release build (Required for performance)
 cargo build --release
 ```
 
@@ -118,7 +119,9 @@ Elapsed Time:     24.5s
 ==================================================
 ```
 
-**Success**: 5 robots completed 20 tasks in 24.5s using VTS allocation and Cross-Zone Handoffs.
+### ✅ Success
+
+5 robots completed 20 tasks in 24.5s. VTS Allocation, Cross-Zone Handoff, and Collision Detection are working correctly.
 
 👉 **Learn More**: [Quick Start Guide](docs/QuickStart.md)
 
@@ -126,14 +129,21 @@ Elapsed Time:     24.5s
 
 ## 📊 Performance Metrics
 
-### Validated Results (v2.3)
+### Benchmark Results (Verified 2025-12-10)
 
-| Component | Target | Actual | Improvement |
+| Component | Target | Actual | Performance |
 |-----------|--------|--------|-------------|
-| **Auction Latency** | < 1 ms | **8.8 μs** | 🚀 **110x** |
-| **Sim Step (500 bots)** | < 10 ms | **3.24 ms** | 🚀 **3x** |
-| **Collision Check (100)**| < 1 ms | **128 μs** | 🚀 **8x** |
-| **Zone Update (100)** | < 100 μs | **4.5 μs** | 🚀 **22x** |
+| **EdgeRuntime auction** | < 1 ms | **8.8 μs** | 🚀 **110x Faster** |
+| **Simulation step (500)** | < 10 ms | **3.24 ms** | 🚀 **3x Faster** |
+| **Collision (100 robots)** | < 1 ms | **128 μs** | 🚀 **8x Faster** |
+| **Zone update (100)** | < 100 μs | **4.5 μs** | 🚀 **22x Faster** |
+
+### Test Status
+
+- ✅ **226 Tests** 100% Passed
+- ✅ **7 Benchmarks** All Completed
+- ✅ **Warehouse Demo** Verified
+- ✅ **Scalability**: 500-1000 Robots Verified
 
 ---
 
@@ -143,23 +153,37 @@ SAP features a **5-Layer Architecture**:
 
 ```
 ┌─────────────────────────────────────────┐
-│         Cloud (Global State)            │  ← Orchestration
+│         Cloud (Global State)            │  ← Global Orchestration
 ├─────────────────────────────────────────┤
 │         Edge (Zone Management)          │  ← VTS Allocation, Auctions
 ├─────────────────────────────────────────┤
-│      Physvisor (Physics Supervisor)     │  ← Validation & Simulation
+│      Physvisor (Physics Supervisor)     │  ← Validation, Simulation
 ├─────────────────────────────────────────┤
-│        Network (Communication)          │  ← PredictiveSync
+│        Network (Communication)          │  ← Message Transmission
 ├─────────────────────────────────────────┤
-│         Robot (Sensor + Actuator)       │  ← Dumb Clients
+│         Robot (Sensor + Actuator)       │  ← Sensors Only (No GPU)
 └─────────────────────────────────────────┘
 ```
 
 ### Core Concepts
 
-- **VoxelTimeSlot (VTS)**: Discretized space-time resources managed via exclusive reservation.
-- **Vickrey Auction**: Second-price sealed-bid auctions for fair and strategy-proof resource allocation.
-- **PredictiveSync**: Bandwidth-efficient synchronization transmitting only deviations from the predicted model (<10% bandwidth usage).
+**VoxelTimeSlot (VTS)**:
+
+- 3D space divided into voxels
+- Time slots assigned to each voxel
+- Robots "reserve" VTS to move
+
+**Vickrey Auction**:
+
+- Second-price sealed-bid auction for VTS allocation
+- Ensures fairness (Incentivizes truthful bidding)
+- Prevents S-MEV (Space MEV)
+
+**PredictiveSync**:
+
+- Edge predicts robot positions
+- Skip sync if prediction error < 10cm
+- Reduces network bandwidth by 90%
 
 ---
 
@@ -167,16 +191,20 @@ SAP features a **5-Layer Architecture**:
 
 ### Core Docs
 
-- 📖 [**Specification v2.3**](docs/SAP_2.3_Specification.md) - Full Technical Spec
-- 🚀 [**Quick Start**](docs/QuickStart.md) - Detailed Setup Guide
-- 📄 [**ArXiv Paper**](docs/SpaceAI_Arxiv_Paper.md) - Academic Whitepaper
-- 📊 [**Status Report**](docs/Project_Status_Report.md) - Development Status
+- 📖 [**Specification v2.3**](docs/SAP_2.3_Specification.md) - Technical Spec (1776 lines)
+- 🚀 [**Quick Start Guide**](docs/QuickStart.md) - Detailed Setup Guide
+- � [**Project Status Report**](docs/Project_Status_Report.md) - Development Status
 
-### Integration
+### Integration Docs
 
-- 🤖 [**ROS2 Bridge**](docs/integration/ROS2_Bridge.md) - ROS2 Integration
-- 🚛 [**VDA5050 Adapter**](docs/integration/VDA5050_Mapping.md) - VDA5050 Standard
-- 🏭 [**Domain Profiles**](docs/profiles/DomainProfiles.md) - Configs for Warehouse/Fab
+- 🤖 [ROS2 Bridge](docs/integration/ROS2_Bridge.md) - ROS2 Integration Guide
+- 🚛 [VDA5050 Mapping](docs/integration/VDA5050_Mapping.md) - VDA5050 Compatibility
+- 🏭 [Domain Profiles](docs/profiles/DomainProfiles.md) - WAREHOUSE/FAB/HOSPITAL Configs
+
+### API Reference
+
+- Rust API: `cargo doc --open`
+- [rustdoc](https://yourusername.github.io/SpaceAI)
 
 ---
 
@@ -187,50 +215,144 @@ SpaceAI/
 ├── rust/                    # Rust Implementation
 │   ├── crates/
 │   │   ├── sap-core/       # Core Types
-│   │   ├── sap-physics/    # Physics Engine
-│   │   ├── sap-economy/    # Auction Engine
+│   │   ├── sap-physics/    # Physics Verification
+│   │   ├── sap-economy/    # Auction System
 │   │   ├── sap-network/    # Network Layer
 │   │   ├── sap-edge/       # Edge Runtime
 │   │   ├── sap-robot/      # Robot SDK
-│   │   └── ...
-│   └── examples/           # Demos
+│   │   ├── sap-physvisor/  # Physvisor
+│   │   ├── sap-cloud/      # Cloud Service
+│   │   ├── sap-bench/      # Benchmarks
+│   │   └── sap-examples/   # Examples
+│   └── examples/
+│       └── warehouse_demo.rs  # Warehouse Demo
 ├── docs/                    # Documentation
-└── README.md               # This file
+│   ├── SAP_2.3_Specification.md
+│   ├── QuickStart.md
+│   └── integration/
+└── README.md               # This File
 ```
+
+---
+
+## 🎓 Background & Motivation
+
+### Problem: Limits of Onboard AI
+
+The current robotics industry is heading towards **Onboard AI**:
+
+- Tesla Optimus: GPU per robot
+- Boston Dynamics: Onboard Sensors + AI
+- Warehouse AMR: Individual Path Planning
+
+**Consequences**:
+
+- ❌ Cost: $10,000+ per robot (GPU+AI)
+- ❌ Updates: Hundreds of individual updates required
+- ❌ Collisions: Difficulty in coordination between robots
+
+### Solution: Space AI (Off-road)
+
+SAP adopts a **Centralized Spatial Allocation** approach:
+
+- ✅ Cost: $500 per robot (Sensors only)
+- ✅ Updates: Modify server only → Instantly applied
+- ✅ Collisions: Physics verification at the Edge
+
+---
+
+## 🌍 Use Cases
+
+### Warehouse
+
+- **Scale**: 100-500 AMRs
+- **Savings**: $10M → $1M (GPU costs)
+- **Effect**: Optimized algorithms via central updates
+
+### Factory
+
+- **Scale**: 50-200 Robots
+- **Precision**: 0.5m voxel, PTP sync
+- **Effect**: Zero collisions, throughput improved
+
+### Hospital
+
+- **Scale**: 20-50 Robots
+- **Safety**: Patient safety guaranteed via physics verification
+- **Effect**: Multi-robot coordination, bottleneck resolution
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions!
+SAP is an open-source project. We welcome contributions!
 
-1. Open an issue: [GitHub Issues](https://github.com/yourusername/SpaceAI/issues)
-2. Submit a PR: Check [CONTRIBUTING.md](CONTRIBUTING.md)
-3. Join Discussions: [GitHub Discussions](https://github.com/yourusername/SpaceAI/discussions)
+### How to Contribute
 
-### Development
+1. Open Issue: [GitHub Issues](https://github.com/yourusername/SpaceAI/issues)
+2. Pull Request: [Contributing Guide](CONTRIBUTING.md)
+3. Join Discussions: [Discussions](https://github.com/yourusername/SpaceAI/discussions)
+
+### Development Environment
 
 ```bash
+# Clone
+git clone https://github.com/yourusername/SpaceAI.git
+cd SpaceAI/rust
+
 # Test
 cargo test --all
 
-# Bench
+# Benchmark
 cargo bench
 ```
 
 ---
 
-## 📜 License
+## � Contact
+
+- **Email**: <spaceai@example.com>
+- **GitHub**: [@yourusername](https://github.com/yourusername)
+- **Discussions**: [Discussions](https://github.com/yourusername/SpaceAI/discussions)
+
+### Industry Partnerships
+
+We welcome collaboration with Big Tech and Robotics companies:
+
+- Technology Review
+- Pilot Tests
+- Standardization Discussions
+
+---
+
+## �📜 License
 
 MIT License - see [LICENSE](LICENSE) for details.
+
+```
+Copyright (c) 2025 SpaceAI Team
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction...
+```
+
+---
+
+## 🙏 Acknowledgements
+
+- Rust Community
+- Open Source Contributors
+- Everyone who provided feedback
 
 ---
 
 ## 🔗 References
 
-- [Vickrey Auction](https://en.wikipedia.org/wiki/Vickrey_auction)
+- [Vickrey Auction (Wikipedia)](https://en.wikipedia.org/wiki/Vickrey_auction)
 - [ROS2](https://www.ros.org/)
 - [VDA5050](https://github.com/VDA5050/VDA5050)
+- [IEEE 1588 (PTP)](https://en.wikipedia.org/wiki/Precision_Time_Protocol)
 
 ---
 

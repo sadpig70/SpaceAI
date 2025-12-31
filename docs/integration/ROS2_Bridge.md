@@ -1,35 +1,140 @@
-# ROS 2 Integration Guide
+# SAP ↔ ROS2 Bridge Design
 
-This guide describes how to bridge **SAP Edge** with **ROS 2** (Robot Operating System).
+**Version**: 1.0  
+**Date**: December 8, 2025  
 
-## 1. Overview
+---
 
-The `sap_ros2_bridge` node translates SAP TransitTickets and VTS definitions into ROS 2 navigation goals, and reports ROS 2 odometry back to the SAP Edge.
+## Overview
 
-## 2. Topic Mapping
+This document defines the interface design between SAP (Spatial Allocation Protocol) and ROS2 systems.
+It specifies the adapter concept for integrating ROS2-based robots into the SAP ecosystem.
 
-| Direction | ROS 2 Topic | Type | SAP Concept | Description |
-|-----------|-------------|------|-------------|-------------|
-| **RX (Sub)** | `/cmd_vel` | `geometry_msgs/Twist` | `MotionCommand` | Velocity output from Edge |
-| **TX (Pub)** | `/odom` | `nav_msgs/Odometry` | `RobotState` | Current pose & velocity |
-| **RX (Sub)** | `/sap/ticket` | `sap_msgs/TransitTicket` | `TransitTicket` | Granting VTS permission |
-| **TX (Pub)** | `/sap/request`| `sap_msgs/VTSRequest` | `VTSRequest` | Robot requesting space |
+---
 
-## 3. Custom Messages (`sap_msgs`)
+## Architecture
 
-### TransitTicket.msg
-
+```text
+┌─────────────────────────────────────────────┐
+│             ROS2 Robot                      │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  │
+│  │ /tf      │  │ /cmd_vel │  │ /odom    │  │
+│  └────┬─────┘  └────▲─────┘  └────┬─────┘  │
+└───────│─────────────│─────────────│────────┘
+        │             │             │
+┌───────▼─────────────▼─────────────▼────────┐
+│           sap-ros2-bridge (Node)           │
+│  ┌──────────────────────────────────────┐  │
+│  │  TransformListener → Position        │  │
+│  │  Velocity → cmd_vel                  │  │
+│  │  SAP Ticket → custom_msgs/Ticket     │  │
+│  └──────────────────────────────────────┘  │
+└─────────────────────│──────────────────────┘
+                      │ TCP/WebSocket
+                      ▼
+               ┌──────────────┐
+               │  SAP Edge    │
+               └──────────────┘
 ```
-uint128 ticket_id
-uint64 vts_id
-uint64 start_time_ns
-uint64 end_time_ns
-uint8[] signature
+
+---
+
+## Topic Mapping
+
+### ROS2 → SAP
+
+| ROS2 Topic | ROS2 Type | SAP Type | Description |
+|------------|-----------|----------|-------------|
+| `/tf` | `tf2_msgs/TFMessage` | `Position` | Robot position (base_link → map) |
+| `/odom` | `nav_msgs/Odometry` | `Velocity` | Robot velocity |
+| `/robot_status` | `std_msgs/String` | `RobotState.status` | Status code |
+
+### SAP → ROS2
+
+| SAP Type | ROS2 Topic | ROS2 Type | Description |
+|----------|------------|-----------|-------------|
+| `MotionCommand` | `/cmd_vel` | `geometry_msgs/Twist` | Velocity command |
+| `RecoveryCommand` | `/sap/recovery` | `sap_msgs/Recovery` | Recovery command |
+| `TransitTicket` | `/sap/ticket` | `sap_msgs/Ticket` | Assigned ticket |
+
+---
+
+## Custom Message Definitions
+
+### sap_msgs/Ticket.msg
+
+```yaml
+# SAP Transit Ticket
+uint64 ticket_id
+uint32 zone_id
+uint64 voxel_id
+uint64 t_start_ns
+uint64 t_end_ns
+uint8 status  # 0=PENDING, 1=ACTIVE, 2=EXPIRED
 ```
 
-## 4. Usage
+### sap_msgs/Recovery.msg
 
-```bash
-# Launch Bridge
-ros2 launch sap_bridge bridge.launch.py edge_ip:=192.168.1.100
+```yaml
+# SAP Recovery Command
+uint8 level  # 0=NONE, 1=DECELERATE, 2=STOP, 3=EMERGENCY
+float32 target_velocity
+string reason
 ```
+
+### sap_msgs/VTSRequest.msg
+
+```yaml
+# VTS Allocation Request
+uint64 robot_id
+uint32 zone_id
+geometry_msgs/Point destination
+uint64 deadline_ns
+uint8 priority
+```
+
+---
+
+## Conversion Logic
+
+### Position Conversion
+
+```python
+# ROS2 tf → SAP Position
+def tf_to_sap_position(transform: TransformStamped) -> Position:
+    return Position(
+        x=transform.transform.translation.x,
+        y=transform.transform.translation.y,
+        z=transform.transform.translation.z,
+        theta=yaw_from_quaternion(transform.transform.rotation)
+    )
+```
+
+### Velocity Conversion
+
+```python
+# SAP Velocity → ROS2 Twist
+def sap_velocity_to_twist(velocity: Velocity) -> Twist:
+    twist = Twist()
+    twist.linear.x = velocity.vx
+    twist.linear.y = velocity.vy
+    twist.angular.z = velocity.omega
+    return twist
+```
+
+---
+
+## Implementation Requirements
+
+1. **Node Configuration**: `sap_bridge_node` (Lifecycle Node)
+2. **QoS**: Sensor data uses Best Effort, commands use Reliable
+3. **Timestamp**: Convert ROS2 Time → Unix Nanoseconds
+4. **Frame ID**: Use `map` frame coordinates
+
+---
+
+## Next Steps
+
+1. Create `sap_msgs` ROS2 package
+2. Implement `sap_bridge` C++/Python node
+3. Test with Gazebo simulation
